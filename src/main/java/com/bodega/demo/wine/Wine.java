@@ -10,20 +10,23 @@ public class Wine {
 	@GeneratedValue
 	private Integer id;
 	private String name;
-	private Integer year;
+	private String year;
 	private Float rating;
 	private Integer num_reviews;
 	private Float price;
-	private Integer body;
-	private Integer acidity;
+	private String  body;
+	private String  acidity;
 	private Integer winery_id;
 	private Integer type_id;
 	private Integer region_id;
 	
 	
 	
-	public Wine(Integer id, String name, Integer year, Float rating, Integer num_reviews, Float price, Integer body,
-			Integer acidity, Integer winery_id, Integer type_id, Integer region_id) {
+	
+	
+	
+	public Wine(Integer id, String name, String year, Float rating, Integer num_reviews, Float price, String body,
+			String acidity, Integer winery_id, Integer type_id, Integer region_id) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -37,10 +40,10 @@ public class Wine {
 		this.type_id = type_id;
 		this.region_id = region_id;
 	}
-
 	public Wine() {
 	
 	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -53,10 +56,10 @@ public class Wine {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(Integer year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 	public Float getRating() {
@@ -77,16 +80,16 @@ public class Wine {
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-	public Integer getBody() {
+	public String getBody() {
 		return body;
 	}
-	public void setBody(Integer body) {
+	public void setBody(String body) {
 		this.body = body;
 	}
-	public Integer getAcidity() {
+	public String getAcidity() {
 		return acidity;
 	}
-	public void setAcidity(Integer acidity) {
+	public void setAcidity(String acidity) {
 		this.acidity = acidity;
 	}
 	public Integer getWinery_id() {
@@ -107,6 +110,8 @@ public class Wine {
 	public void setRegion_id(Integer region_id) {
 		this.region_id = region_id;
 	}
+	
+	
 	
 	
 	
