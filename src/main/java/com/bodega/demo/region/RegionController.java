@@ -20,6 +20,7 @@ public class RegionController {
 		return regionService.getAll();
 	}
 	
+	@GetMapping("/{id}")
 	public Region showOne(@PathVariable int id){
 		return regionService.getOne(id);
 	}

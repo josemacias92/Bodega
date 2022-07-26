@@ -20,6 +20,7 @@ public class TypeController {
 		return typeService.getAll();
 	}
 	
+	@GetMapping("/{id}")
 	public Type showOne(@PathVariable int id){
 		return typeService.getOne(id);
 	}
