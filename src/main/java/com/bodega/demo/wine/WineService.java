@@ -18,4 +18,15 @@ public class WineService {
 	public Wine getOne(int id){
 		return wineRepository.findById(id).orElse(null);
 	}
+	
+	public void deletebyId(int id){
+		 wineRepository.deleteById(id);
+	}
+	
+	
+	public Wine save(Wine wine) {
+		return wineRepository.save(wine);
+	}
+	
+	
 }
