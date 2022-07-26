@@ -18,4 +18,13 @@ public class RegionService {
 	public Region getOne(int id){
 		return regionRepository.findById(id).orElse(null);
 	}
+	
+	public Region save(Region newRegion){
+		Region region = regionRepository.save(newRegion);
+		return newRegion;
+	}
+	
+	public void deleteById(int id){
+		regionRepository.deleteById(id);
+	}
 }
