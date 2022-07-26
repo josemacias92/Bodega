@@ -14,4 +14,8 @@ public class WineService {
 	public List<Wine> getAll(){
 		return wineRepository.findAll();
 	}
+	
+	public Wine getOne(int id){
+		return wineRepository.findById(id).orElse(null);
+	}
 }

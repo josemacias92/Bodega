@@ -14,4 +14,8 @@ public class RegionService {
 	public List<Region> getAll(){
 		return regionRepository.findAll();
 	}
+	
+	public Region getOne(int id){
+		return regionRepository.findById(id).orElse(null);
+	}
 }
