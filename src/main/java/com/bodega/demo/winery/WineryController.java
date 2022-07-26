@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bodega.demo.wine.Wine;
 
 @RestController
-@RequestMapping("/wineries")
+@RequestMapping("/api/wineries")
 public class WineryController {
 
 	@Autowired

@@ -16,7 +16,7 @@ import com.bodega.demo.region.Region;
 import com.bodega.demo.winery.Winery;
 
 @RestController
-@RequestMapping("/wines")
+@RequestMapping("/api/wines")
 public class WineController {
 
 	@Autowired
