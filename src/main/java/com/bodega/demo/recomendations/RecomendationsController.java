@@ -1,4 +1,4 @@
-package com.bodega.demo.region;
+package com.bodega.demo.recomendations;
 
 import java.util.List;
 
@@ -13,18 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bodega.demo.wine.Wine;
+import com.bodega.demo.wine.WineService;
+
 @RestController
-@RequestMapping("/api/regions")
-public class RegionController {
+@RequestMapping("/api/recommend")
+public class RecomendationsController {
 
 	@Autowired
-	RegionService regionService;
+	WineService wineService;
 
 	@GetMapping
 
-	public ResponseEntity<List<Region>> showAll() {
+	public ResponseEntity<List<Wine>> showAll() {
 
-		List<Region> list = regionService.getAll();
+		List<Wine> list = wineService.getAll();
 
 		return list.size() == 0 
 				? ResponseEntity.noContent().build() 
@@ -32,28 +35,28 @@ public class RegionController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Region> showOne(@PathVariable int id) {
+	public ResponseEntity<Wine> showOne(@PathVariable int id) {
 
-		Region item = regionService.getOne(id);
+		Wine wine = wineService.getOne(id);
 
-		return item == null 
+		return wine == null 
 				? ResponseEntity.notFound().build() 
-				: ResponseEntity.ok().body(item);
+				: ResponseEntity.ok().body(wine);
 	}
 
 	@PostMapping
-	public ResponseEntity<Region> save(@RequestBody Region item) {
-		return ResponseEntity.ok().body(regionService.save(item));
+	public ResponseEntity<Wine> save(@RequestBody Wine wine) {
+		return ResponseEntity.ok().body(wineService.save(wine));
 	}
 
 	@PutMapping
-	public ResponseEntity<Region> edit(@RequestBody Region item) {
-		return ResponseEntity.ok().body(regionService.save(item));
+	public ResponseEntity<Wine> edit(@RequestBody Wine wine) {
+		return ResponseEntity.ok().body(wineService.save(wine));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteById(@PathVariable int id) {
-		regionService.deleteById(id);
+		wineService.deletebyId(id);
 		return ResponseEntity.ok().build();
 	}
 }

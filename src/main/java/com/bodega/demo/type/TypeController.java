@@ -3,6 +3,7 @@ package com.bodega.demo.type;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,29 +21,36 @@ public class TypeController {
 	TypeService typeService;
 	@GetMapping
 	
-	public List<Type> showAll(){
-		return typeService.getAll();
+	public ResponseEntity<List<Type>> showAll(){
+		List<Type> list = typeService.getAll();
+		
+		return list.size() == 0 
+				? ResponseEntity.noContent().build() 
+				: ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/{id}")
-	public Type showOne(@PathVariable int id){
-		return typeService.getOne(id);
+	public ResponseEntity<Type> showOne(@PathVariable int id){
+		Type item = typeService.getOne(id);
+		
+		return item == null 
+				? ResponseEntity.notFound().build() 
+				: ResponseEntity.ok().body(item);
 	}
 	
 	@PostMapping
-	public Type save(@RequestBody Type newType){
-		Type type = typeService.save(newType);
-		return newType;
+	public ResponseEntity<Type> save(@RequestBody Type item){
+		return ResponseEntity.ok().body(typeService.save(item));
 	}
 	
 	@PutMapping
-	public Type edit(@RequestBody Type newType){
-		Type type = typeService.save(newType);
-		return newType;
+	public ResponseEntity<Type> edit(@RequestBody Type item){
+		return ResponseEntity.ok().body(typeService.save(item));
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable int id){
+	public ResponseEntity deleteById(@PathVariable int id){
 		typeService.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 }
