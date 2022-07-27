@@ -25,7 +25,6 @@ public class Wine {
 	
 	
 	
-	
 	public Wine(Integer id, String name, String year, Float rating, Integer num_reviews, Float price, String body,
 			String acidity, Integer winery_id, Integer type_id, Integer region_id) {
 		super();

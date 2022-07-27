@@ -1,8 +1,11 @@
 package com.bodega.demo.recomendations;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bodega.demo.wine.Wine;
@@ -23,40 +27,51 @@ public class RecomendationsController {
 	@Autowired
 	WineService wineService;
 
-	@GetMapping
+	@GetMapping("/best")
+	public ResponseEntity<List<Wine>> getBest(@RequestParam("top") int top) {
 
-	public ResponseEntity<List<Wine>> showAll() {
-
-		List<Wine> list = wineService.getAll();
+		Pageable limit = PageRequest.of(0, top);
+		List<Wine> list = wineService.getBest(limit);
 
 		return list.size() == 0 
 				? ResponseEntity.noContent().build() 
 				: ResponseEntity.ok().body(list);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Wine> showOne(@PathVariable int id) {
+	@GetMapping("/expensive")
+	public ResponseEntity<List<Wine>> getMostExpensive(@RequestParam("top") int top) {
 
-		Wine wine = wineService.getOne(id);
+		Pageable limit = PageRequest.of(0, top);
+		List<Wine> list = wineService.getMostExpensive(limit);
 
-		return wine == null 
-				? ResponseEntity.notFound().build() 
-				: ResponseEntity.ok().body(wine);
+		return list.size() == 0 
+				? ResponseEntity.noContent().build() 
+				: ResponseEntity.ok().body(list);
 	}
+	
+	@GetMapping("/bang")
+	public ResponseEntity<List<Wine>> getBestBangForTheBuck(@RequestParam("top") int top) {
 
-	@PostMapping
-	public ResponseEntity<Wine> save(@RequestBody Wine wine) {
-		return ResponseEntity.ok().body(wineService.save(wine));
+		Pageable limit = PageRequest.of(0, top);
+		List<Wine> list = wineService.getBestBangForTheBuck(limit);
+		
+		//List<Wine> resultList = listBest.stream().sorted()
+
+		return list.size() == 0 
+				? ResponseEntity.noContent().build() 
+				: ResponseEntity.ok().body(list);
 	}
+	
+	@GetMapping("/vintage")
+	public ResponseEntity<HashMap<String, List<Wine>>> getVintage(@RequestParam("top") int top) {
 
-	@PutMapping
-	public ResponseEntity<Wine> edit(@RequestBody Wine wine) {
-		return ResponseEntity.ok().body(wineService.save(wine));
-	}
+		Pageable limit = PageRequest.of(0, top);
+		HashMap<String, List<Wine>> vintageList = wineService.getVintageList(limit);
+		
+		//List<Wine> resultList = listBest.stream().sorted()
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity deleteById(@PathVariable int id) {
-		wineService.deletebyId(id);
-		return ResponseEntity.ok().build();
+		return vintageList.size() == 0 
+				? ResponseEntity.noContent().build() 
+				: ResponseEntity.ok().body(vintageList);
 	}
 }
