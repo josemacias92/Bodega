@@ -3,6 +3,8 @@ package com.bodega.demo.wine;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,24 +25,45 @@ public class WineController {
 	WineService wineService;
 	
 	@GetMapping
-	public List<Wine> showAll(){
-		return wineService.getAll();
+	public ResponseEntity<List<Wine>> showAll(){
+		List<Wine> list = wineService.getAll();
+		
+			return  list.size() == 0 
+					? ResponseEntity.noContent().build() 
+					: ResponseEntity.ok().body(wineService.getAll());
+		
+	        
+		
 	}
 	
 	@GetMapping("/{id}")
-	public Wine showOne(@PathVariable int id){
-		return wineService.getOne(id);
+	public ResponseEntity<Wine> showOne(@PathVariable int id){
+		
+		
+		Wine item = wineService.getOne(id);
+		
+		return  item == null 
+				? ResponseEntity.notFound().build() 
+				: ResponseEntity.ok().body(wineService.getOne(id));
+		
+		
 	}
 	@DeleteMapping("/{id}")
-	public void deleteOne(@PathVariable int id){
+	public ResponseEntity deleteOne(@PathVariable int id){
+		
 		 wineService.deletebyId(id);
+		 return ResponseEntity.ok().build();
+		 
 	}
 	@PostMapping
-	public Wine save(@PathVariable Wine wine){
-		 return wineService.save(wine);
+	public ResponseEntity<Wine> save(@PathVariable Wine wine){
+		return ResponseEntity.ok().body(wineService.save(wine));
+		
+		  
 	}
 	@PutMapping
-	public Wine edit(@RequestBody Wine wine){
-		 return wineService.save(wine);
+	public ResponseEntity<Wine> edit(@RequestBody Wine wine){
+		return ResponseEntity.ok().body(wineService.save(wine));
+		
 	}
 }

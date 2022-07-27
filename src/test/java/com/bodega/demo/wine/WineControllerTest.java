@@ -9,12 +9,15 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.bodega.demo.region.Region;
 import com.bodega.demo.winery.Winery;
 import com.bodega.demo.winery.WineryController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(WineController.class)
 class WineControllerTest {
 
@@ -67,6 +70,23 @@ class WineControllerTest {
 		}
 		
 					
+	}
+	
+	@Test
+	void save() throws Exception {
+		Wine wineTest1 = new Wine(100, "vino", "26/07/2022", 12f, 13, 10f, "cuerpo", "acidez", 1, 1, 1 );
+
+		Mockito.when(wineService.save(wineTest1)).thenReturn(wineTest1);
+		  ObjectMapper objectMapper = new ObjectMapper();
+	        String json = objectMapper.writeValueAsString(wineTest1);
+	        
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/wines")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json)
+				.characterEncoding("utf-8"))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(100))
+				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
 	}
 		
 		
