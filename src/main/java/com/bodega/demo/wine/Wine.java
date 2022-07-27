@@ -1,30 +1,68 @@
 package com.bodega.demo.wine;
 
+import java.sql.Date;
+
+import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.apache.tomcat.util.bcel.Const;
+import org.hibernate.validator.constraints.Range;
+
+
 
 @Entity
 public class Wine {
+	 final static long ActualYear = (long) Calendar.getInstance().get(Calendar.YEAR);
+	
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@NotNull
+	@NotEmpty
 	private String name;
+	@NotNull
+	@NotEmpty
+	@Range(min = 1900, max = 2022 )
 	private String year;
+	@NotNull
+	@NotEmpty
+	@Min(0)
+	@Max(5)
 	private Float rating;
+	@NotNull
+	@NotEmpty
 	private Integer num_reviews;
+	@NotNull
+	@NotEmpty
+	@Min(0)
 	private Float price;
+	@NotNull
+	@NotEmpty
+	@Min(0)
+	@Max(5)
 	private String  body;
+	@NotNull
+	@NotEmpty
 	private String  acidity;
+	@NotNull
+	@NotEmpty
 	private Integer winery_id;
+	@NotNull
+	@NotEmpty
 	private Integer type_id;
+	@NotNull
+	@NotEmpty
 	private Integer region_id;
 	
-	
-	
-	
-	
+
 	public Wine(Integer id, String name, String year, Float rating, Integer num_reviews, Float price, String body,
 			String acidity, Integer winery_id, Integer type_id, Integer region_id) {
 		super();

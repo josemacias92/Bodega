@@ -5,12 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.lang.NonNull;
+
 @Entity
 public class Type {
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@NonNull
 	private String name;
 
 	public Type(Integer id, String name) {
