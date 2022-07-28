@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,10 +27,10 @@ public class Wine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@NotNull
-	@NotEmpty
+	@NotBlank
 	private String name;
 	@NotNull
-	@NotEmpty
+	@NotBlank
 	@Range(min = 1900, max = 2022 )
 	private String year;
 	@NotNull
@@ -42,12 +43,12 @@ public class Wine {
 	@Min(0)
 	private Float price;
 	@NotNull
-	@NotEmpty
+	@NotBlank
 	@Min(0)
 	@Max(5)
 	private String  body;
 	@NotNull
-	@NotEmpty
+	@NotBlank
 	private String  acidity;
 	@NotNull
 	private Integer winery_id;
