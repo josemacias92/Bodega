@@ -79,7 +79,7 @@ class WineryControllerTest {
 	void save() throws Exception {
 		Winery wineryTest1 = new Winery(100, "vino");
 
-		Mockito.when(wineryService.save(wineryTest1)).thenReturn(wineryTest1);
+	
 		  ObjectMapper objectMapper = new ObjectMapper();
 	        String json = objectMapper.writeValueAsString(wineryTest1);
 	        
@@ -87,10 +87,26 @@ class WineryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json)
 				.characterEncoding("utf-8"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(100))
-				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
+	
+	
+	@Test
+	@WithMockUser(username = "admin", password = "1234", roles = { "USER" })
+	void editTest() throws Exception {
+		Winery wineryTest1 = new Winery(100, "vino");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String json = objectMapper.writeValueAsString(wineryTest1);
+	        
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/wineries")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	
+	
 	@WithMockUser(username = "admin", password = "123", roles = { "ADMIN" })
 	@Test
 	void delete() throws Exception {
@@ -100,6 +116,14 @@ class WineryControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding("utf-8"))
 				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+	void deleteTest_withNonValidUser() throws Exception {
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/wineries/1"))
+				.andExpect(MockMvcResultMatchers.status().isForbidden());
 	}
 		
 	}
