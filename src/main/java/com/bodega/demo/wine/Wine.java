@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.Range;
 
 @Entity
 public class Wine {
-	 final static long ActualYear = (long) Calendar.getInstance().get(Calendar.YEAR);
+
 	
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,8 @@ public class Wine {
 	private String name;
 	@NotNull
 	@NotBlank
-	@Range(min = 1900, max = 2022 )
+	@Min(1900)
+	@MaxCurrentYear
 	private String year;
 	@NotNull
 	@Min(0)
