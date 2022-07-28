@@ -1,9 +1,5 @@
 package com.bodega.demo.type;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -54,19 +50,46 @@ class TypeControllerTest {
 	
 	@Test
 	@WithMockUser(username = "admin", password = "1234", roles = { "USER" })
-	void save() throws Exception {
+	void saveTest() throws Exception {
 		Type test = new Type(1, "testName");
 
-		  ObjectMapper objectMapper = new ObjectMapper();
-	        String json = objectMapper.writeValueAsString(test);
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String json = objectMapper.writeValueAsString(test);
 	        
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/types")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json)
 				.characterEncoding("utf-8"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(content().json("{ \"name\": \"testName\" }"));
-		
-		verify(typeService, times(1)).save(test);
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+	void editTest() throws Exception {
+		Type test = new Type(1, "testName");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String json = objectMapper.writeValueAsString(test);
+	        
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/types")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "ADMIN" })
+	void deleteTest_withValidUser()  throws Exception {
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/types/1"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+	void deleteTest_withNonValidUser() throws Exception {
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/types/1"))
+				.andExpect(MockMvcResultMatchers.status().isForbidden());
 	}
 }

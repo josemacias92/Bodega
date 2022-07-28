@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -49,20 +50,47 @@ class RegionControllerTest {
 	}
 	
 	@Test
-	void save() throws Exception {
+	@WithMockUser(username = "admin", password = "1234", roles = { "USER" })
+	void saveTest() throws Exception {
 		Region test = new Region(1, "testName", "España");
 
-		Mockito.when(regionService.save(test)).thenReturn(test);
-		  ObjectMapper objectMapper = new ObjectMapper();
-	        String json = objectMapper.writeValueAsString(test);
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String json = objectMapper.writeValueAsString(test);
 	        
 		mockMvc.perform(MockMvcRequestBuilders.post("/api/regions")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
-				.characterEncoding("utf-8"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(1))
-				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("testName"));
+				.content(json))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "1234", roles = { "USER" })
+	void editTest() throws Exception {
+		Region test = new Region(1, "testName", "España");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+	    String json = objectMapper.writeValueAsString(test);
+	        
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/regions")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "ADMIN" })
+	void deleteTest_withValidUser()  throws Exception {
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/regions/1"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+	void deleteTest_withNonValidUser() throws Exception {
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/regions/1"))
+				.andExpect(MockMvcResultMatchers.status().isForbidden());
 	}
 
 }
