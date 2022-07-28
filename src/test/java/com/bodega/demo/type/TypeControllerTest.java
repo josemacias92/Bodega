@@ -1,6 +1,8 @@
 package com.bodega.demo.type;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.util.Arrays;
 
@@ -10,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.bodega.demo.type.Type;
-import com.bodega.demo.type.TypeController;
-import com.bodega.demo.type.TypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(TypeController.class)
@@ -53,10 +53,10 @@ class TypeControllerTest {
 	}
 	
 	@Test
+	@WithMockUser(username = "admin", password = "1234", roles = { "USER" })
 	void save() throws Exception {
 		Type test = new Type(1, "testName");
 
-		Mockito.when(typeService.save(test)).thenReturn(test);
 		  ObjectMapper objectMapper = new ObjectMapper();
 	        String json = objectMapper.writeValueAsString(test);
 	        
@@ -65,7 +65,8 @@ class TypeControllerTest {
 				.content(json)
 				.characterEncoding("utf-8"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(1))
-				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("testName"));
+				.andExpect(content().json("{ \"name\": \"testName\" }"));
+		
+		verify(typeService, times(1)).save(test);
 	}
 }

@@ -28,9 +28,12 @@ public class RecomendationsController {
 	WineService wineService;
 
 	@GetMapping("/best")
-	public ResponseEntity<List<Wine>> getBest(@RequestParam("top") int top) {
+	public ResponseEntity<List<Wine>> getBest(@RequestParam(required = false) Integer top) {
 
-		Pageable limit = PageRequest.of(0, top);
+		Pageable limit = top == null 
+				? null  
+				: PageRequest.of(0, top);
+		
 		List<Wine> list = wineService.getBest(limit);
 
 		return list.size() == 0 
@@ -39,9 +42,12 @@ public class RecomendationsController {
 	}
 
 	@GetMapping("/expensive")
-	public ResponseEntity<List<Wine>> getMostExpensive(@RequestParam("top") int top) {
+	public ResponseEntity<List<Wine>> getMostExpensive(@RequestParam(required = false) Integer top) {
 
-		Pageable limit = PageRequest.of(0, top);
+		Pageable limit = top == null 
+				? null  
+				: PageRequest.of(0, top);
+		
 		List<Wine> list = wineService.getMostExpensive(limit);
 
 		return list.size() == 0 
@@ -50,9 +56,12 @@ public class RecomendationsController {
 	}
 	
 	@GetMapping("/bang")
-	public ResponseEntity<List<Wine>> getBestBangForTheBuck(@RequestParam("top") int top) {
+	public ResponseEntity<List<Wine>> getBestBangForTheBuck(@RequestParam(required = false) Integer top) {
 
-		Pageable limit = PageRequest.of(0, top);
+		Pageable limit = top == null 
+				? null  
+				: PageRequest.of(0, top);
+		
 		List<Wine> list = wineService.getBestBangForTheBuck(limit);
 		
 		//List<Wine> resultList = listBest.stream().sorted()
@@ -63,9 +72,12 @@ public class RecomendationsController {
 	}
 	
 	@GetMapping("/vintage")
-	public ResponseEntity<HashMap<String, List<Wine>>> getVintage(@RequestParam("top") int top) {
+	public ResponseEntity<HashMap<String, List<Wine>>> getVintage(@RequestParam(required = false) Integer top) {
 
-		Pageable limit = PageRequest.of(0, top);
+		Pageable limit = top == null 
+				? null  
+				: PageRequest.of(0, top);
+		
 		HashMap<String, List<Wine>> vintageList = wineService.getVintageList(limit);
 		
 		//List<Wine> resultList = listBest.stream().sorted()
