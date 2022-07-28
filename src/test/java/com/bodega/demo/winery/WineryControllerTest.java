@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -73,7 +74,7 @@ class WineryControllerTest {
 		
 					
 	}
-	
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
 	@Test
 	void save() throws Exception {
 		Winery wineryTest1 = new Winery(100, "vino");
@@ -90,7 +91,7 @@ class WineryControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(100))
 				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
 	}
-		
+	@WithMockUser(username = "admin", password = "123", roles = { "ADMIN" })
 	@Test
 	void delete() throws Exception {
 		

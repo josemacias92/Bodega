@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -73,8 +74,9 @@ class WineControllerTest {
 	}
 	
 	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "USER" })
 	void save() throws Exception {
-		@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+
 		Wine wineTest1 = new Wine(100, "vino", "2001", 2f, 3, 4f, "1", "3", 1, 1, 1 );
 
 		Mockito.when(wineService.save(wineTest1)).thenReturn(wineTest1);
@@ -89,7 +91,10 @@ class WineControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(100))
 				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
 	}
+	
+	
 	@Test
+	@WithMockUser(username = "admin", password = "123", roles = { "ADMIN" })
 	void delete() throws Exception {
 		
 	        
