@@ -74,7 +74,8 @@ class WineControllerTest {
 	
 	@Test
 	void save() throws Exception {
-		Wine wineTest1 = new Wine(100, "vino", "26/07/2022", 12f, 13, 10f, "cuerpo", "acidez", 1, 1, 1 );
+		@WithMockUser(username = "admin", password = "123", roles = { "USER" })
+		Wine wineTest1 = new Wine(100, "vino", "2001", 2f, 3, 4f, "1", "3", 1, 1, 1 );
 
 		Mockito.when(wineService.save(wineTest1)).thenReturn(wineTest1);
 		  ObjectMapper objectMapper = new ObjectMapper();
@@ -88,7 +89,15 @@ class WineControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("@.id").value(100))
 				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
 	}
+	@Test
+	void delete() throws Exception {
 		
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/wines/12")
+				.contentType(MediaType.APPLICATION_JSON)
+				.characterEncoding("utf-8"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
 		
 		
 	}

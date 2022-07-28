@@ -91,7 +91,15 @@ class WineryControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("@.name").value("vino"));
 	}
 		
+	@Test
+	void delete() throws Exception {
 		
+	        
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/wineries/12")
+				.contentType(MediaType.APPLICATION_JSON)
+				.characterEncoding("utf-8"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
 		
 	}
 
