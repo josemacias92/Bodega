@@ -33,15 +33,12 @@ public class Wine {
 	@Range(min = 1900, max = 2022 )
 	private String year;
 	@NotNull
-	@NotEmpty
 	@Min(0)
 	@Max(5)
 	private Float rating;
 	@NotNull
-	@NotEmpty
 	private Integer num_reviews;
 	@NotNull
-	@NotEmpty
 	@Min(0)
 	private Float price;
 	@NotNull
@@ -53,13 +50,10 @@ public class Wine {
 	@NotEmpty
 	private String  acidity;
 	@NotNull
-	@NotEmpty
 	private Integer winery_id;
 	@NotNull
-	@NotEmpty
 	private Integer type_id;
 	@NotNull
-	@NotEmpty
 	private Integer region_id;
 	
 

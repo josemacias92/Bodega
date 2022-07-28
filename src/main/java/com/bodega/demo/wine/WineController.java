@@ -56,7 +56,7 @@ public class WineController {
 		 
 	}
 	@PostMapping
-	public ResponseEntity<Wine> save(@PathVariable Wine wine){
+	public ResponseEntity<Wine> save(@RequestBody Wine wine){
 		return ResponseEntity.ok().body(wineService.save(wine));
 		
 		  

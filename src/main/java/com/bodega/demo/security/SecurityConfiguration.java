@@ -26,9 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeHttpRequests((authz) -> authz
 //                        .antMatchers("/manage/**").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET).permitAll()
-                        .antMatchers(HttpMethod.POST, "/**").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.POST, "/**").hasRole("USER")
                         .antMatchers(HttpMethod.PUT, "/**").hasRole("USER")
-                        .antMatchers(HttpMethod.PATCH, "/**").hasRole("USER")
                         .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
